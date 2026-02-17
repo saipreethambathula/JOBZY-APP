@@ -74,15 +74,17 @@ A full-stack **job portal application** for job seekers and admins. Built with *
 front-end/
   src/
     components/
-    pages/
+    features/
+    routes/
+    layouts/
     App.jsx
   package.json
 
 backend/
-  models/
+  middleware/
   routes/
-  controllers/
-  app.js
+  db.js
+  server.js
   package.json
 ```
 
@@ -100,7 +102,7 @@ cd jobzy-app
 2. **Install frontend dependencies**
 
 ```bash
-cd front-end
+cd jobzy-frontend
 npm install
 npm run dev
 ```
@@ -108,7 +110,7 @@ npm run dev
 3. **Install backend dependencies**
 
 ```bash
-cd ../backend
+cd ../jobzy-backend
 npm install
 npm start
 ```
