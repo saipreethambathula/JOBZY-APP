@@ -33,17 +33,17 @@ A full-stack **job portal application** for job seekers and admins. Built with *
 
 ### Images
 
-![Hero Page](./screenshot/hero.png)
-![Login Page](./screenshot/login.png)
-![Sign Up Page](./screenshot/signup.png)
+![Hero Page](./screenshots/hero.png)
+![Login Page](./screenshots/login.png)
+![Sign Up Page](./screenshots/signup.png)
 
-![Home / Jobs](./screenshot/home.png)
-![Single job view](./screenshot/singlejob.png)
-![Saved Jobs](./screenshot/savedjobs.png)
+![Home / Jobs](./screenshots/home.png)
+![Single job view](./screenshots/singlejob.png)
+![Saved Jobs](./screenshots/savedjobs.png)
 
-![Admin Panel](./screenshot/admin.png)
-![Admin Panel (Edit Job)](./screenshot/editjob.png)
-![Admin Panel (Post Jobs)](./screenshot/postjob.png)
+![Admin Panel](./screenshots/admin.png)
+![Admin Panel (Edit Job)](./screenshots/editjob.png)
+![Admin Panel (Post Jobs)](./screenshots/postjob.png)
 
 ---
 
