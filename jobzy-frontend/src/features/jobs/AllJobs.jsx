@@ -145,18 +145,20 @@ const AllJobs = () => {
 
                 {userRole === "admin" && (
                   <>
-                    <button
-                      className="p-2 border rounded-lg hover:bg-blue-50"
-                      onClick={() => navigate(`/admin/edit/${job.id}`)}
-                    >
-                      <Pencil size={16} />
-                    </button>
-                    <button
-                      className="p-2 border rounded-lg hover:bg-red-50"
-                      onClick={() => confirmDelete(job.id)}
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        className="p-2 border rounded-lg hover:bg-blue-50"
+                        onClick={() => navigate(`/admin/edit/${job.id}`)}
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        className="p-2 border rounded-lg hover:bg-red-50"
+                        onClick={() => confirmDelete(job.id)}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </>
                 )}
               </div>
