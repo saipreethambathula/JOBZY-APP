@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { motion } from "framer-motion";
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Auth = ({ isTrue = false }) => {
@@ -10,17 +11,13 @@ const Auth = ({ isTrue = false }) => {
   const token = Cookies.get("token");
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
-  //Immediate redirect if JWT exists
-  if (token && user?.role === "admin") {
-    return <Navigate to="/admin" replace />;
-  }
-
-  if (token && user?.role === "user") {
-    return <Navigate to="/jobs" replace />;
-  }
+  // Immediate redirect if JWT exists
+  if (token && user?.role === "admin") return <Navigate to="/admin" replace />;
+  if (token && user?.role === "user") return <Navigate to="/jobs" replace />;
 
   const [isSignup, setIsSignup] = useState(isTrue);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,14 +34,15 @@ const Auth = ({ isTrue = false }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    if (isSignup) {
-      if (!passwordRegex.test(formData.password)) {
-        return setError(
-          "Password must contain at least one capital letter and one number",
-        );
-      }
+    if (isSignup && !passwordRegex.test(formData.password)) {
+      return setError(
+        "Password must contain at least one capital letter and one number",
+      );
     }
+
+    setIsLoading(true);
 
     try {
       const url = isSignup
@@ -70,28 +68,24 @@ const Auth = ({ isTrue = false }) => {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(data.message || "Authentication failed");
-      }
 
       if (!isSignup) {
-        Cookies.set("token", data.token, {
-          expires: 30,
-          path: "/",
-        });
+        Cookies.set("token", data.token, { expires: 30, path: "/" });
         Cookies.set("user", JSON.stringify(data.user), { expires: 1 });
 
-        if (data.user.role === "admin") {
-          navigate("/admin", { replace: true });
-        } else {
-          navigate("/jobs", { replace: true });
-        }
+        if (data.user.role === "admin") navigate("/admin", { replace: true });
+        else navigate("/jobs", { replace: true });
       } else {
+        alert("Signup successful! You can now login.");
         setIsSignup(false);
-        setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+        setFormData({ name: "", email: "", password: "" });
       }
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,6 +96,7 @@ const Auth = ({ isTrue = false }) => {
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-md bg-white p-10 rounded-4xl border border-neutral-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
       >
+        {/* Toggle Login / Signup */}
         <div className="flex mb-8 bg-neutral-50 p-1.5 rounded-2xl">
           <button
             onClick={() => setIsSignup(false)}
@@ -125,6 +120,7 @@ const Auth = ({ isTrue = false }) => {
           </button>
         </div>
 
+        {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold tracking-tight mb-2 text-gray-800">
             {isSignup ? "Join Jobzy" : "Welcome Back"}
@@ -136,10 +132,11 @@ const Auth = ({ isTrue = false }) => {
           </p>
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {isSignup && (
             <div className="relative flex items-center">
-              <User className="absolute  text-gray-400 ml-2.5 " size={21} />
+              <User className="absolute text-gray-400 ml-2.5" size={21} />
               <input
                 name="name"
                 placeholder="Name"
@@ -165,7 +162,7 @@ const Auth = ({ isTrue = false }) => {
           </div>
 
           <div className="relative flex items-center">
-            <Lock className="absolute  text-gray-400 ml-2.5" size={21} />
+            <Lock className="absolute text-gray-400 ml-2.5" size={21} />
             <input
               name="password"
               type={showPassword ? "text" : "password"}
@@ -185,8 +182,37 @@ const Auth = ({ isTrue = false }) => {
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          <button className="w-full py-4 bg-black text-white rounded-2xl font-bold hover:bg-neutral-800 transition-all active:scale-[0.98] shadow-xl shadow-black/10 mt-4">
-            {isSignup ? "Sign Up" : "Login"}
+          {/* Submit Button with Loading */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-4 bg-black text-white rounded-2xl font-bold hover:bg-neutral-800 transition-all active:scale-[0.98] shadow-xl shadow-black/10 mt-4 disabled:opacity-50"
+          >
+            <span className="inline-flex items-center justify-center w-full">
+              {isLoading && (
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+              )}
+              {isLoading ? "Processing..." : isSignup ? "Sign Up" : "Login"}
+            </span>
           </button>
         </form>
 
