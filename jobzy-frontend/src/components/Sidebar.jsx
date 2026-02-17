@@ -30,14 +30,12 @@ const Sidebar = ({ isOpen, onClose }) => {
           ${isOpen ? "md:w-60" : "md:hidden"}
         `}
       >
-        {/* Close button (mobile) */}
         <div className="flex justify-end p-3 md:hidden">
           <button onClick={onClose} className="text-black">
             <X size={24} />
           </button>
         </div>
 
-        {/* Links */}
         <nav className="p-5 space-y-2">
           {sidebarList.map((item) => {
             const Icon = item.icon;

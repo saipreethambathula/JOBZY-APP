@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const FullJob = () => {
   const { id } = useParams();
@@ -9,21 +10,22 @@ const FullJob = () => {
 
   const fetchJob = async () => {
     const token = Cookies.get("token");
+
     try {
-      const response = await fetch(`http://localhost:4000/jobs/${id}`, {
+      const response = await fetch(`${BASE_URL}/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setJob(data);
-      } else {
-        console.error("Failed to fetch job");
+      if (!response.ok) {
+        throw new Error("Failed to fetch job");
       }
+
+      const data = await response.json();
+      setJob(data);
     } catch (error) {
-      console.error("Error fetching job:", error);
+      console.error("Error fetching job:", error.message);
     } finally {
       setLoading(false);
     }

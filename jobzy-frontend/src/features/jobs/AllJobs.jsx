@@ -3,12 +3,13 @@ import Cookies from "js-cookie";
 import { Pencil, Trash2, Bookmark } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
 const JOBS_PER_PAGE = 9;
 
 const AllJobs = () => {
   const navigate = useNavigate();
-
   const [jobList, setJobList] = useState([]);
+  const [savedJobs, setSavedJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jobToDelete, setJobToDelete] = useState(null);
@@ -19,27 +20,39 @@ const AllJobs = () => {
 
   /* ================= FETCH JOBS ================= */
   const getAllJobs = async () => {
-    const response = await fetch("http://localhost:4000/jobs", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
+    try {
+      const res = await fetch(`${BASE_URL}/jobs`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Failed to fetch jobs");
+      const data = await res.json();
       setJobList(data);
+    } catch (err) {
+      console.error(err.message);
     }
   };
 
-  /* ================= SAVE JOB ================= */
-  const handleSaveJob = (jobId) => {
-    const savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
+  /* ================= LOAD SAVED JOBS ================= */
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("savedJobs")) || [];
+    setSavedJobs(stored);
+    console.log(stored);
+  }, []);
 
-    if (!savedJobs.includes(jobId)) {
-      savedJobs.push(jobId);
-      localStorage.setItem("savedJobs", JSON.stringify(savedJobs));
+  /* ================= SAVE / UNSAVE JOB ================= */
+  const handleSaveJob = (job) => {
+    console.log(job);
+    let updated = [...savedJobs];
+    const exists = updated.find((item) => item.id === job.id);
+
+    if (exists) {
+      updated = updated.filter((item) => item.id !== job.id);
+    } else {
+      updated.push(job); // Save full object
     }
-    console.log(savedJobs);
+
+    localStorage.setItem("savedJobs", JSON.stringify(updated));
+    setSavedJobs(updated);
   };
 
   /* ================= DELETE JOB ================= */
@@ -51,17 +64,12 @@ const AllJobs = () => {
   const handleDelete = async () => {
     if (!jobToDelete) return;
 
-    const response = await fetch(
-      `http://localhost:4000/jobs/delete/${jobToDelete}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await fetch(`${BASE_URL}/jobs/delete/${jobToDelete}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    if (response.ok) {
+    if (res.ok) {
       setJobList((prev) => prev.filter((job) => job.id !== jobToDelete));
       setShowDeleteModal(false);
       setJobToDelete(null);
@@ -80,62 +88,61 @@ const AllJobs = () => {
   return (
     <div className="min-h-[calc(100vh-60px)] bg-gray-50 p-6">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {currentJobs.map((job) => (
-          <div
-            key={job.id}
-            className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition"
-          >
-            {/* ================= HEADER ================= */}
-            <div className="flex items-start gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden">
-                {job.icon?.startsWith("http") ? (
-                  <img
-                    src={job.icon}
-                    alt={job.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-sm font-semibold text-gray-600 uppercase">
-                    {job.title?.charAt(0)}
-                  </span>
-                )}
-              </div>
+        {currentJobs.map((job) => {
+          const isSaved = savedJobs.find((item) => item.id === job.id);
+          return (
+            <div
+              key={job.id}
+              className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition"
+            >
+              {/* HEADER */}
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden">
+                  {job.icon?.startsWith("http") ? (
+                    <img
+                      src={job.icon}
+                      alt={job.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-sm font-semibold text-gray-600 uppercase">
+                      {job.title?.charAt(0)}
+                    </span>
+                  )}
+                </div>
 
-              <div>
-                <p className="text-sm text-gray-500">
-                  {job.company_name || "Company not specified"}
+                <div>
+                  <p className="text-sm text-gray-500">
+                    {job.company_name || "Company not specified"}
+                  </p>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    {job.title}
+                  </h2>
+                </div>
+              </div>
+              {/* SKILLS */}
+              {job.skills && (
+                <p className="text-sm text-gray-700 mb-4">
+                  <span className="font-bold">Skills:</span> {job.skills}
                 </p>
-                <h2 className="text-lg font-semibold text-gray-900">
-                  {job.title}
-                </h2>
-              </div>
-            </div>
+              )}
+              {/* FOOTER */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold text-black">
+                  CTC: {job.package}
+                </span>
 
-            {/* ================= SKILLS ================= */}
-            {job.skills && (
-              <p className="text-sm text-gray-700 mb-4">
-                <span className="font-bold">Skills:</span> {job.skills}
-              </p>
-            )}
-
-            {/* ================= FOOTER ================= */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-black">
-                CTC: {job.package}
-              </span>
-
-              <div className="flex gap-2">
-                {/* Save – user & admin */}
                 {userRole === "user" && (
                   <button
-                    onClick={() => handleSaveJob(job.id)}
-                    className="p-2 border rounded-lg hover:bg-green-50"
+                    onClick={() => handleSaveJob(job)}
+                    className={`p-2 border rounded-lg ${
+                      isSaved ? "bg-black" : "hover:bg-gray-100"
+                    }`}
                   >
-                    <Bookmark size={16} />
+                    <Bookmark size={16} color={isSaved ? "#fff" : "#000"} />
                   </button>
                 )}
 
-                {/* Admin only */}
                 {userRole === "admin" && (
                   <>
                     <button
@@ -144,34 +151,32 @@ const AllJobs = () => {
                     >
                       <Pencil size={16} />
                     </button>
-
                     <button
-                      onClick={() => confirmDelete(job.id)}
                       className="p-2 border rounded-lg hover:bg-red-50"
+                      onClick={() => confirmDelete(job.id)}
                     >
                       <Trash2 size={16} />
                     </button>
                   </>
                 )}
               </div>
+              {/* VIEW JOB */}
+              <button
+                onClick={() =>
+                  userRole === "admin"
+                    ? navigate(`/admin/job/${job.id}`)
+                    : navigate(`/jobs/job/${job.id}`)
+                }
+                className="bg-black rounded-md py-2 text-white font-bold text-xs px-3 mt-3 w-full"
+              >
+                View Job →
+              </button>
             </div>
-
-            {/* ================= VIEW JOB ================= */}
-            <button
-              onClick={() =>
-                userRole === "admin"
-                  ? navigate(`/admin/job/${job.id}`)
-                  : navigate(`/jobs/job/${job.id}`)
-              }
-              className="bg-black rounded-md py-2 text-white font-bold text-xs px-3 mt-3"
-            >
-              View Job →
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* ================= PAGINATION ================= */}
+      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-8">
           <button
@@ -181,9 +186,8 @@ const AllJobs = () => {
           >
             Prev
           </button>
-
-          {[...Array(totalPages)].map((_, index) => {
-            const page = index + 1;
+          {[...Array(totalPages)].map((_, i) => {
+            const page = i + 1;
             return (
               <button
                 key={page}
@@ -198,7 +202,6 @@ const AllJobs = () => {
               </button>
             );
           })}
-
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((p) => p + 1)}
@@ -209,7 +212,7 @@ const AllJobs = () => {
         </div>
       )}
 
-      {/* ================= DELETE MODAL ================= */}
+      {/* DELETE MODAL */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80">

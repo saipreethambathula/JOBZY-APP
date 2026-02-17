@@ -10,7 +10,7 @@ const Auth = ({ isTrue = false }) => {
   const token = Cookies.get("token");
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
-  // 🔐 Immediate redirect if JWT exists
+  //Immediate redirect if JWT exists
   if (token && user?.role === "admin") {
     return <Navigate to="/admin" replace />;
   }
@@ -102,7 +102,6 @@ const Auth = ({ isTrue = false }) => {
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-md bg-white p-10 rounded-4xl border border-neutral-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
       >
-        {/* Toggle Login / Signup */}
         <div className="flex mb-8 bg-neutral-50 p-1.5 rounded-2xl">
           <button
             onClick={() => setIsSignup(false)}
@@ -126,7 +125,6 @@ const Auth = ({ isTrue = false }) => {
           </button>
         </div>
 
-        {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold tracking-tight mb-2 text-gray-800">
             {isSignup ? "Join Jobzy" : "Welcome Back"}
@@ -138,7 +136,6 @@ const Auth = ({ isTrue = false }) => {
           </p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {isSignup && (
             <div className="relative flex items-center">

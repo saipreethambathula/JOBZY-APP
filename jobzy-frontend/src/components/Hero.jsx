@@ -21,7 +21,6 @@ const Hero = () => {
       <section className="min-h-[calc(100vh-60px)] flex items-center bg-white">
         <div className="max-w-7xl mx-auto px-6 w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
             <div>
               <h1 className="text-4xl md:text-5xl font-bold text-black leading-tight">
                 Find Your Dream Job <br /> Faster & Smarter

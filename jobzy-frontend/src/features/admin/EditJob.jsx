@@ -21,7 +21,7 @@ const EditJob = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // ✅ Load existing job data
+  // Load existing job data
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -63,7 +63,7 @@ const EditJob = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Update job
+  //Update job
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -90,7 +90,6 @@ const EditJob = () => {
           onSubmit={handleSubmit}
           className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2"
         >
-          {/* Job Title */}
           <div className="flex flex-col">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Job Title
@@ -104,7 +103,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Company Name */}
           <div className="flex flex-col">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Company Name
@@ -118,7 +116,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Job Role */}
           <div className="flex flex-col">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Job Role
@@ -137,7 +134,6 @@ const EditJob = () => {
             </select>
           </div>
 
-          {/* Icon */}
           <div className="flex flex-col">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Icon
@@ -150,7 +146,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Short Description */}
           <div className="flex flex-col col-span-full">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Short Description
@@ -164,7 +159,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Detailed Description */}
           <div className="flex flex-col col-span-full">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Detailed Description
@@ -177,7 +171,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Skills */}
           <div className="flex flex-col">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Skills
@@ -190,7 +183,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Package */}
           <div className="flex flex-col">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Package
@@ -204,7 +196,6 @@ const EditJob = () => {
             />
           </div>
 
-          {/* Apply Link */}
           <div className="flex flex-col col-span-full">
             <label className="text-sm font-medium mb-1 text-gray-800">
               Apply Link

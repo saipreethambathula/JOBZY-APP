@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const PostJobs = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ const PostJobs = () => {
 
     const token = Cookies.get("token");
 
-    const response = await fetch("http://localhost:4000/jobs/add", {
+    const response = await fetch(`${BASE_URL}/jobs/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
