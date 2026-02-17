@@ -7,15 +7,6 @@ A full-stack **job portal application** for job seekers and admins. Built with *
 
 ---
 
-# JOBZY-APP
-
-A full-stack **job portal application** for job seekers and admins. Built with **React, Node.js, Express, and SQLite**.
-
-- **Frontend:** [https://jobzy-app.vercel.app](https://jobzy-app.vercel.app)
-- **Backend:** [https://jobzy-backend.onrender.com](https://jobzy-backend.onrender.com)
-
----
-
 ## Features
 
 ### Job Seeker
@@ -33,17 +24,37 @@ A full-stack **job portal application** for job seekers and admins. Built with *
 
 ### Images
 
+#### Hero page
 ![Hero Page](./screenshots/hero.png)
+
+#### Login Page
 ![Login Page](./screenshots/login.png)
+
+#### Sign Up Page
 ![Sign Up Page](./screenshots/signup.png)
 
+#### Job Seeker
+
+#### Home
 ![Home / Jobs](./screenshots/home.png)
+
+#### Single Job view
 ![Single job view](./screenshots/singlejob.png)
+
+#### Saved Jobs
 ![Saved Jobs](./screenshots/savedjobs.png)
 
+
+#### Job Seeker
+
+#### Admin Panel
 ![Admin Panel](./screenshots/admin.png)
-![Admin Panel (Edit Job)](./screenshots/editjob.png)
+
+#### Post Job
 ![Admin Panel (Post Jobs)](./screenshots/postjob.png)
+
+#### Edit Job
+![Admin Panel (Edit Job)](./screenshots/editjob.png)
 
 ---
 
