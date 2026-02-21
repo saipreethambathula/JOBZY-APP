@@ -216,6 +216,11 @@ const Auth = ({ isTrue = false }) => {
           </button>
         </form>
 
+        <div className="mt-6 bg-neutral-50 border border-neutral-200 rounded-2xl p-4 text-center">
+          <p className="text-xs font-semibold text-gray-500 mb-1">
+            Demo Admin Access - admin@gmail.com / admin@123
+          </p>
+        </div>
         <p
           className="text-center text-sm mt-4 cursor-pointer text-gray-600"
           onClick={() => setIsSignup(!isSignup)}
