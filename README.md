@@ -25,35 +25,43 @@ A full-stack **job portal application** for job seekers and admins. Built with *
 ### Images
 
 #### Hero page
+
 ![Hero Page](./screenshots/hero.png)
 
 #### Login Page
+
 ![Login Page](./screenshots/login.png)
 
 #### Sign Up Page
+
 ![Sign Up Page](./screenshots/signup.png)
 
 #### Job Seeker
 
 #### Home
+
 ![Home / Jobs](./screenshots/home.png)
 
 #### Single Job view
+
 ![Single job view](./screenshots/singlejob.png)
 
 #### Saved Jobs
-![Saved Jobs](./screenshots/savedjobs.png)
 
+![Saved Jobs](./screenshots/savedjobs.png)
 
 #### Job Seeker
 
 #### Admin Panel
+
 ![Admin Panel](./screenshots/admin.png)
 
 #### Post Job
+
 ![Admin Panel (Post Jobs)](./screenshots/postjob.png)
 
 #### Edit Job
+
 ![Admin Panel (Edit Job)](./screenshots/editjob.png)
 
 ---
@@ -128,112 +136,3 @@ npm start
 - Advanced search and filters
 
 ---
-
-## License
-
-MIT License
-
-## Features
-
-### Job Seeker
-
-- Browse available jobs (**Home / Jobs**)
-- View full job details (**Full Job**)
-- Save jobs for later (**Saved Jobs**)
-- Authentication: **Login / Sign Up**
-
-### Admin
-
-- Manage all jobs (**All Jobs**)
-- View single job details (**Single Job**)
-- Post new jobs (**Post Job**)
-
-### Images
-
-![Hero Page](./screenshot/hero.png)
-![Login Page](./screenshot/hero.png)
-![Sign Up Page](./screenshot/hero.png)
-![Home / Jobs](./screenshot/home.png)
-![Single job view](./screenshot/fulljob.png)
-![Saved Jobs](./screenshot/saved.png)
-
-![Admin Panel](./screenshot/admin.png)
-
-![Admin Panel (Single job view)](./screenshot/admin.png)
-![Admin Panel (Edit Job)](./screenshot/admin.png)
-![Admin Panel (Post Jobs)](./screenshot/admin.png)
-
----
-
-## Tech Stack
-
-- React (Frontend)
-- Node.js + Express (Backend)
-- SQLite (Database)
-- JWT (Authentication)
-- Hosting: Vercel (Frontend), Render (Backend)
-
----
-
-## Project Structure
-
-```
-front-end/
-  src/
-    components/
-    pages/
-    App.jsx
-  package.json
-
-backend/
-  models/
-  routes/
-  controllers/
-  app.js
-  package.json
-```
-
----
-
-## Setup & Installation
-
-1. **Clone the repository**
-
-```bash
-git clone <repo_url>
-cd jobzy-app
-```
-
-2. **Install frontend dependencies**
-
-```bash
-cd front-end
-npm install
-npm run dev
-```
-
-3. **Install backend dependencies**
-
-```bash
-cd ../backend
-npm install
-npm start
-```
-
-- Frontend runs at `http://localhost:5173`
-- Backend runs at `http://localhost:5000`
-
----
-
-## Future Enhancements
-
-- Apply to jobs directly
-- User profile management
-- Email notifications
-- Advanced search and filters
-
----
-
-## License
-
-MIT License
